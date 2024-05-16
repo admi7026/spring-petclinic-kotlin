@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/spring-projects/spring-petclinic.git' // Replace with your repository URL
+                git 'https://github.com/admi7026/spring-petclinic-kotlin.git' // Replace with your repository URL
             }
         }
 
