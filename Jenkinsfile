@@ -23,10 +23,9 @@ pipeline {
 
         stage('Code Quality Analysis') {
             steps {
-                // Uncomment and configure if you are using SonarQube
-                // withSonarQubeEnv('SonarQube') { // Replace 'SonarQube' with your SonarQube server ID
-                //     sh 'mvn sonar:sonar'
-                // }
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar' // Run SonarQube analysis
+                }
             }
         }
 
