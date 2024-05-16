@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        DOCKER_USERNAME = 'your-docker-username'
-        DOCKER_PASSWORD = 'your-docker-password'
+        DOCKER_USERNAME = credentials('your-docker-username')
+        DOCKER_PASSWORD = credentials('your-docker-password')
         DATABASE_URL = 'jdbc:mysql://your-database-host:3306/your-database-name'
         APP_HOST = 'your-app-host'
     }
@@ -11,6 +11,7 @@ pipeline {
             steps {
                 script {
                     // Your build commands here
+                    sh 'mvn clean package'
                 }
             }
         }
@@ -18,6 +19,7 @@ pipeline {
             steps {
                 script {
                     // Your test commands here
+                    sh 'mvn test'
                 }
             }
         }
@@ -25,6 +27,7 @@ pipeline {
             steps {
                 script {
                     // Your code quality analysis commands here
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
@@ -32,6 +35,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image commands here
+                    docker.build("your-docker-username/your-docker-image-name:latest")
                 }
             }
         }
@@ -39,6 +43,7 @@ pipeline {
             steps {
                 script {
                     // Deploy to test environment commands here
+                    sh 'kubectl apply -f your-test-deployment.yaml'
                 }
             }
         }
@@ -46,6 +51,7 @@ pipeline {
             steps {
                 script {
                     // Release to production commands here
+                    sh 'kubectl apply -f your-production-deployment.yaml'
                 }
             }
         }
@@ -53,9 +59,10 @@ pipeline {
             steps {
                 script {
                     // Monitoring and alerting commands here
+                    sh 'kubectl apply -f prometheus-config.yaml'
+                    sh 'kubectl apply -f grafana-config.yaml'
                 }
             }
         }
     }
 }
-
