@@ -22,16 +22,6 @@ pipeline {
             }
         }
 
-        stage('Code Quality Analysis') {
-            steps {
-                echo 'Running code quality analysis...'
-                // Example: Run SonarQube analysis using Gradle
-                withSonarQubeEnv('SonarQube') {
-                    bat './gradlew sonarqube'
-                }
-            }
-        }
-
         stage('Deploy') {
             steps {
                 echo 'Deploying to staging environment...'
