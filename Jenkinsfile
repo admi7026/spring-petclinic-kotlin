@@ -1,5 +1,4 @@
 pipeline {
-pipeline {
     agent any
 
     stages {
@@ -7,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building the application...'
                 // Example: Build the application using Gradle
-                sh './gradlew build'
+                bat './gradlew build'
                 // Archive the build artifact
                 archiveArtifacts artifacts: '**/build/libs/*.jar', allowEmptyArchive: true
             }
@@ -17,7 +16,7 @@ pipeline {
             steps {
                 echo 'Running tests...'
                 // Example: Run JUnit tests using Gradle
-                sh './gradlew test'
+                bat './gradlew test'
                 // Publish test results
                 junit '**/build/test-results/test/*.xml'
             }
@@ -27,8 +26,8 @@ pipeline {
             steps {
                 echo 'Deploying to staging environment...'
                 // Example: Deploy using Docker
-                sh 'docker build -t myapp:latest .'
-                sh 'docker run -d -p 8080:8080 myapp:latest'
+                bat 'docker build -t myapp:latest .'
+                bat 'docker run -d -p 8080:8080 myapp:latest'
             }
         }
 
@@ -36,7 +35,7 @@ pipeline {
             steps {
                 echo 'Releasing to production...'
                 // Example: Use AWS CodeDeploy
-                sh 'aws deploy create-deployment --application-name MyApp --deployment-group-name MyDeploymentGroup --s3-location bucket=mybucket,key=myapp.zip,bundleType=zip'
+                bat 'aws deploy create-deployment --application-name MyApp --deployment-group-name MyDeploymentGroup --s3-location bucket=mybucket,key=myapp.zip,bundleType=zip'
             }
         }
 
@@ -44,7 +43,7 @@ pipeline {
             steps {
                 echo 'Setting up monitoring and alerting...'
                 // Example: Configure Datadog monitoring
-                sh 'datadog-agent start'
+                bat 'datadog-agent start'
             }
         }
     }
