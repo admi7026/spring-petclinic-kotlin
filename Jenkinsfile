@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building the application...'
                 // Build the application using Gradle
-                bat './gradlew build'
+                sh './gradlew build'
                 // Archive the build artifact
                 archiveArtifacts artifacts: '**/build/libs/*.jar', allowEmptyArchive: true
             }
@@ -16,7 +16,7 @@ pipeline {
             steps {
                 echo 'Running tests...'
                 // Run JUnit tests using Gradle
-                bat './gradlew test'
+                sh './gradlew test'
                 // Publish test results
                 junit '**/build/test-results/test/*.xml'
             }
@@ -26,8 +26,13 @@ pipeline {
             steps {
                 echo 'Deploying to staging environment...'
                 script {
-                    def dockerImage = docker.build("myapp:latest")
-                    dockerImage.run("-d -p 8080:8080")
+                    // Stop any existing container using the same name
+                    sh 'docker stop myapp || true'
+                    // Remove the container if it exists
+                    sh 'docker rm myapp || true'
+                    // Build and run the Docker container
+                    sh 'docker build -t myapp:latest .'
+                    sh 'docker run -d -p 8080:8080 --name myapp myapp:latest'
                 }
             }
         }
@@ -36,7 +41,7 @@ pipeline {
             steps {
                 echo 'Releasing to production...'
                 // Example: Use AWS CodeDeploy
-                bat 'aws deploy create-deployment --application-name MyApp --deployment-group-name MyDeploymentGroup --s3-location bucket=mybucket,key=myapp.zip,bundleType=zip'
+                sh 'aws deploy create-deployment --application-name MyApp --deployment-group-name MyDeploymentGroup --s3-location bucket=mybucket,key=myapp.zip,bundleType=zip'
             }
         }
 
@@ -44,7 +49,7 @@ pipeline {
             steps {
                 echo 'Setting up monitoring and alerting...'
                 // Example: Configure Datadog monitoring
-                bat 'datadog-agent start'
+                sh 'datadog-agent start'
             }
         }
     }
@@ -63,3 +68,5 @@ pipeline {
         }
     }
 }
+
+
