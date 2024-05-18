@@ -27,7 +27,7 @@ pipeline {
                 echo 'Deploying to staging environment...'
                 script {
                     def dockerImage = docker.build("myapp:latest")
-                    dockerImage.run("-d -p 8080:8080")
+                    dockerImage.run("-d -p 8888:8080")  // Changed port mapping to use host port 8888
                 }
             }
         }
