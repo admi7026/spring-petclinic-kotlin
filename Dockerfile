@@ -1,5 +1,5 @@
-# Use Gradle with JDK 21 for building the project
-FROM gradle:7.6-jdk21 AS build
+# Use Gradle with JDK 17 for building the project
+FROM gradle:7.6-jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle build
