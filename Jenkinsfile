@@ -25,7 +25,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying to staging environment...'
-                // Deploy using Docker
                 script {
                     def dockerImage = docker.build("myapp:latest")
                     dockerImage.run("-d -p 8080:8080")
