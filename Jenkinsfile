@@ -22,21 +22,11 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying to staging environment...'
-                script {
-                    def dockerImage = docker.build("myapp:latest")
-                    dockerImage.run("-d -p 8888:8080")  // Changed port mapping to use host port 8888
-                }
-            }
-        }
-
         stage('Release') {
             steps {
                 echo 'Releasing to production...'
-                // Example: Use AWS CodeDeploy
-                bat 'aws deploy create-deployment --application-name MyApp --deployment-group-name MyDeploymentGroup --s3-location bucket=mybucket,key=myapp.zip,bundleType=zip'
+                // Placeholder command or your deployment command goes here
+                bat 'echo "Deploying to production..."'
             }
         }
 
