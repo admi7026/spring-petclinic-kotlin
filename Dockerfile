@@ -1,10 +1,10 @@
-FROM gradle:4.7.0-jdk8-alpine AS build
+# Use Gradle with JDK 17 for building the project
+FROM gradle:7.5-jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle build
 
-FROM openjdk:8-jre-slim
-EXPOSE 8080
-COPY --from=build /home/gradle/src/build/libs/spring-petclinic-kotlin.jar /app/
-RUN bash -c 'touch /app/spring-petclinic-kotlin.jar'
-ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-petclinic-kotlin.jar"]
+# Use OpenJDK 17 for running the application
+FROM openjdk:17-jre-slim
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/your-app.jar
+ENTRYPOINT ["java", "-jar", "/app/your-app.jar"]
