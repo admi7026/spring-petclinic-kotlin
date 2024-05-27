@@ -21,7 +21,7 @@ stages {
                 }
             }
         }
-    }
+    
         stage('Code Quality Analysis') {
             steps {
                 echo 'Running SonarQube analysis...'
