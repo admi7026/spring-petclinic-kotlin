@@ -1,24 +1,22 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JDK 17' // Use the JDK name configured in Jenkins
-    }
     stages {
         stage('Build') {
             steps {
-                // Your build steps here
+                echo 'Building the application...'
+                // Build the application using Gradle
                 sh './gradlew build'
+                // Archive the build artifact
+                archiveArtifacts artifacts: '**/build/libs/*.jar', allowEmptyArchive: true
             }
         }
-        // Other stages
-    }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
                 // Run JUnit tests using Gradle
-                bat './gradlew test'
+                sh './gradlew test'
                 // Publish test results
                 junit '**/build/test-results/test/*.xml'
             }
@@ -29,10 +27,18 @@ pipeline {
                 echo 'Running SonarQube analysis...'
                 script {
                     def scannerHome = tool 'SonarQube Scanner'
-                    withSonarQubeEnv('SonarQube') {
-                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jenkins-integration -Dsonar.sources=src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_a44c2f15754f276ef6be6d404a058b693404daf2"
+                    withSonarQubeEnv('SonarQube') { // 'SonarQube' is the name of the SonarQube server configured in Jenkins
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jenkins-integration -Dsonar.sources=src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_a44c2f15754f276ef6be6d404a058b693404daf2"
                     }
                 }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying to staging environment...'
+                // Placeholder command or your deployment command goes here
+                sh 'echo "Deploying to staging environment..."'
             }
         }
 
@@ -40,15 +46,15 @@ pipeline {
             steps {
                 echo 'Releasing to production...'
                 // Placeholder command or your deployment command goes here
-                bat 'echo "Deploying to production..."'
+                sh 'echo "Releasing to production..."'
             }
         }
 
         stage('Monitoring and Alerting') {
             steps {
                 echo 'Setting up monitoring and alerting...'
-                // Placeholder command or your monitoring setup goes here
-                bat 'echo "Setting up monitoring and alerting..."'
+                // Example: Configure Datadog monitoring
+                sh 'datadog-agent start'
             }
         }
     }
@@ -67,4 +73,3 @@ pipeline {
         }
     }
 }
-
