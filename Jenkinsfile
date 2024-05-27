@@ -12,13 +12,6 @@ stages {
                 }
             }
         }
-
-        stage('Test') {
-            steps {
-                echo 'Running JUnit tests...
-                }
-            }
-        }
     
         stage('Code Quality Analysis') {
             steps {
