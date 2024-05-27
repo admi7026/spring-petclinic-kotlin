@@ -2,17 +2,16 @@
      pipeline {
     agent any
 
-    stages {
+   stages {
         stage('Build') {
             steps {
-                echo 'Building the application...'
-                // Build the application using Gradle
-                bat './gradlew build'
-                // Archive the build artifact
-                archiveArtifacts artifacts: '**/build/libs/*.jar', allowEmptyArchive: true
+                echo 'Building the Docker image...'
+                // Build Docker image using Dockerfile in your repository
+                script {
+                    docker.build('your-image-name:latest')
+                }
             }
         }
-
         stage('Test') {
             steps {
                 echo 'Running tests...'
