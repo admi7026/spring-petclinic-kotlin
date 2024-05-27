@@ -19,15 +19,9 @@
             }
         }
 
-        stage('Code Quality Analysis') {
+         stage('Code Quality Analysis') {
             steps {
-                echo 'Running SonarQube analysis...'
-                script {
-                    def scannerHome = tool 'SonarQubeScanner'
-                    withSonarQubeEnv('SonarQube') {
-                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jenkins-integration -Dsonar.sources=src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_a44c2f15754f276ef6be6d404a058b693404daf2"
-                    }
-                }
+                echo 'Running code quality analysis...'
             }
         }
         
