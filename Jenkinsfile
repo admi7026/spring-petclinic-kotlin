@@ -1,8 +1,7 @@
 
-     pipeline {
+    pipeline {
     agent any
-
-stages {
+    stages {
         stage('Build') {
             steps {
                 echo 'Building the Docker image...'
@@ -12,13 +11,15 @@ stages {
                 }
             }
         }
-     stages {
+        
         stage('Test') {
             steps {
                 echo 'Running basic test...'
+                // Add your test commands here
             }
         }
-       stage('Code Quality Analysis') {
+
+        stage('Code Quality Analysis') {
             steps {
                 echo 'Running SonarQube analysis...'
                 script {
@@ -28,6 +29,7 @@ stages {
                     }
                 }
             }
+        }
         
         stage('Deploy') {
             steps {
@@ -41,19 +43,20 @@ stages {
 
         stage('Release') {
             steps {
-                echo 'Releasing to production...'
-                // Example: Use AWS CodeDeploy
-                bat 'aws deploy create-deployment --application-name MyApp --deployment-group-name MyDeploymentGroup --s3-location bucket=mybucket,key=myapp.zip,bundleType=zip'
+                echo 'Releasing...'
+                // Add your release commands here
             }
         }
-
         stage('Monitoring and Alerting') {
             steps {
-                echo 'Setting up monitoring and alerting with New Relic...'
-                script {
-                    // Add your New Relic setup script here
-                    bat 'newrelic-admin run-program java -jar your-app.jar'
-                }
+                echo 'Setting up monitoring and alerting...'
+                // Add monitoring and alerting commands here
+            }
+        }
+        stage('Declarative: Post Actions') {
+            steps {
+                echo 'Cleaning up...'
+                deleteDir()
             }
         }
     }
