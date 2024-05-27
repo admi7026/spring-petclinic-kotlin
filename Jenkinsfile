@@ -14,11 +14,13 @@
         }
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                // Run JUnit tests using Gradle
-                bat './gradlew test'
-                // Publish test results
-                junit '**/build/test-results/test/*.xml'
+                echo 'Running JUnit tests...'
+                // Run JUnit tests using Gradle (assuming you're using Gradle for your project)
+                script {
+                    docker.image('your-image-name:latest').inside {
+                        sh './gradlew test'
+                    }
+                }
             }
         }
 
