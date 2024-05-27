@@ -6,18 +6,21 @@ stages {
         stage('Build') {
             steps {
                 echo 'Building the Docker image...'
+                // Build Docker image using Dockerfile in your repository
                 script {
-                    // Use an absolute path for the Docker build command
-                    sh 'docker build -t your-image-name:latest .'
+                    docker.build('your-image-name:latest')
                 }
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Running JUnit tests...'
+                // Run JUnit tests using Gradle (assuming you're using Gradle for your project)
                 script {
-                    // Use an absolute path for the Docker inspect command
-                    sh 'docker inspect -f . your-image-name:latest'
+                    docker.image('your-image-name:latest').inside {
+                        sh './gradlew test'
+                    }
                 }
             }
         }
