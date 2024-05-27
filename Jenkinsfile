@@ -11,7 +11,13 @@ pipeline {
                 archiveArtifacts artifacts: '**/build/libs/*.jar', allowEmptyArchive: true
             }
         }
-
+ stage('Debugging') {
+            steps {
+                echo 'Checking environment...'
+                sh 'echo $PATH' // Print the PATH variable for debugging
+                sh 'which nohup' // Check if nohup is accessible
+            }
+        }
         stage('Test') {
             steps {
                 echo 'Running tests...'
