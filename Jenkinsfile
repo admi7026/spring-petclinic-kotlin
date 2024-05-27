@@ -18,17 +18,13 @@ stages {
                 echo 'Running basic test...'
             }
         }
-       tools {
-        // Use the installed SonarQube Scanner
-        SonarQubeScanner 'SonarQubeScanner'
-    }
-    stages {
-        stage('Code Quality Analysis') {
+       stage('Code Quality Analysis') {
             steps {
+                echo 'Running SonarQube analysis...'
                 script {
-                    // Run SonarQube analysis
-                    withSonarQubeEnv('YourSonarQubeServer') {
-                        sh 'sonar-scanner'
+                    def scannerHome = tool 'SonarQube Scanner'
+                    withSonarQubeEnv('SonarQube') { // 'SonarQube' is the name of the SonarQube server configured in Jenkins
+                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=jenkins-integration -Dsonar.sources=src -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_a44c2f15754f276ef6be6d404a058b693404daf2"
                     }
                 }
             }
