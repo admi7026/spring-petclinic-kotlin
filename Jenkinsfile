@@ -1,16 +1,18 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'JDK 17' // Use the JDK name configured in Jenkins
+    }
     stages {
         stage('Build') {
             steps {
-                echo 'Building the application...'
-                // Build the application using Gradle
-                bat './gradlew build'
-                // Archive the build artifact
-                archiveArtifacts artifacts: '**/build/libs/*.jar', allowEmptyArchive: true
+                // Your build steps here
+                sh './gradlew build'
             }
         }
+        // Other stages
+    }
 
         stage('Test') {
             steps {
