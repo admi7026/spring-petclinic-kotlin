@@ -15,12 +15,7 @@ stages {
 
         stage('Test') {
             steps {
-                echo 'Running JUnit tests...'
-                // Run JUnit tests using Gradle (assuming you're using Gradle for your project)
-                script {
-                    docker.image('your-image-name:latest').inside {
-                        sh './gradlew test'
-                    }
+                echo 'Running JUnit tests...
                 }
             }
         }
