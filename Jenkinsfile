@@ -28,8 +28,7 @@ stages {
                     }
                 }
             }
-        }
-
+        
         stage('Deploy') {
             steps {
                 echo 'Deploying to staging environment...'
